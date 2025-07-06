@@ -1,9 +1,11 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle, AlertTriangle, Phone, MessageSquare } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { AlertTriangle, Phone, MessageSquare } from 'lucide-react';
 
 interface AlertsSectionProps {
   selectedDate: Date;
@@ -13,35 +15,49 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
   const [activeTab, setActiveTab] = useState('active');
 
   // Sample data - in real app would come from API
-  const alertsData = {
-    active: [
-      { id: 1, type: 'Missed EVV', description: 'Visit for John Doe on 8:00 AM', caregiver: 'Jane Smith' },
-      { id: 2, type: 'Late Clock-In', description: 'Visit for Alice Johnson on 10:00 AM', caregiver: 'Bob Williams' },
-    ],
-    flagged: [
-      { id: 3, type: 'Unusual Activity', description: 'Prolonged visit for Michael Brown', caregiver: 'Jane Smith' },
-    ],
-    reminders: [
-      { id: 4, type: 'SMS Sent', description: 'Reminder sent to Emily White for 2:00 PM visit', caregiver: 'Bob Williams' },
-      { id: 5, type: 'Voice Call', description: 'Voice call made to David Lee for upcoming visit', caregiver: 'Jane Smith' },
-    ],
-  };
+  const activeAlertsData = [
+    { 
+      id: 1, 
+      status: 'New',
+      caregiver: 'Sarah Johnson', 
+      caregiverId: 'CG001',
+      contact: '(555) 123-4567',
+      patient: 'Mary Smith', 
+      issue: 'Clock-In',
+      scheduled: '09:00 AM'
+    },
+    { 
+      id: 2, 
+      status: 'New',
+      caregiver: 'Mike Davis', 
+      caregiverId: 'CG002',
+      contact: '(555) 987-6543',
+      patient: 'John Brown', 
+      issue: 'Clock-Out',
+      scheduled: '02:30 PM'
+    },
+  ];
 
-  const getAlertIcon = (type: string) => {
-    switch (type) {
-      case 'Missed EVV':
-      case 'Unusual Activity':
-        return <AlertTriangle className="h-4 w-4 mr-2 text-red-500" />;
-      case 'Late Clock-In':
-        return <AlertTriangle className="h-4 w-4 mr-2 text-orange-500" />;
-      case 'SMS Sent':
-        return <MessageSquare className="h-4 w-4 mr-2 text-blue-500" />;
-      case 'Voice Call':
-        return <Phone className="h-4 w-4 mr-2 text-purple-500" />;
-      default:
-        return <CheckCircle className="h-4 w-4 mr-2 text-green-500" />;
-    }
-  };
+  const flaggedCaregiversData = [
+    { 
+      id: 1,
+      caregiver: 'Lisa Wilson', 
+      caregiverId: 'CG003',
+      contact: '(555) 456-7890',
+      patient: 'Robert Taylor', 
+      issueType: 'Both',
+      resolvedAt: '11:45 AM'
+    },
+    { 
+      id: 2,
+      caregiver: 'David Chen', 
+      caregiverId: 'CG004',
+      contact: '(555) 321-0987',
+      patient: 'Anna Martinez', 
+      issueType: 'Clock-In',
+      resolvedAt: '10:15 AM'
+    },
+  ];
 
   return (
     <Card className="shadow-sm border">
@@ -50,67 +66,116 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
       </CardHeader>
       <CardContent className="p-0">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="active" className="relative">
-              Active Alerts ({alertsData.active.length})
+              <AlertTriangle className="h-4 w-4 mr-1" />
+              Active Alerts ({activeAlertsData.length})
             </TabsTrigger>
             <TabsTrigger value="flagged" className="relative">
-              Flagged Today ({alertsData.flagged.length})
-            </TabsTrigger>
-            <TabsTrigger value="reminders" className="relative">
-              Reminders ({alertsData.reminders.length})
+              Flagged Today ({flaggedCaregiversData.length})
             </TabsTrigger>
           </TabsList>
+          
           <div className="p-4">
             <TabsContent value="active" className="space-y-4">
-              {alertsData.active.map((alert) => (
-                <div key={alert.id} className="border rounded-md p-3 bg-gray-50">
-                  <div className="flex items-center text-sm">
-                    {getAlertIcon(alert.type)}
-                    <span className="font-medium">{alert.type}:</span> {alert.description}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Caregiver: {alert.caregiver}
-                  </div>
-                </div>
-              ))}
-              {alertsData.active.length === 0 && (
-                <div className="text-sm text-gray-500">No active alerts for today.</div>
-              )}
+              <div className="flex items-center space-x-2 mb-4">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                <h3 className="text-base font-semibold">Real-Time Alerts - Manual Review Required</h3>
+              </div>
+              
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Caregiver</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Patient</TableHead>
+                    <TableHead>Issue</TableHead>
+                    <TableHead>Scheduled</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {activeAlertsData.map((alert) => (
+                    <TableRow key={alert.id}>
+                      <TableCell>
+                        <Badge variant="destructive" className="text-xs">
+                          {alert.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{alert.caregiver}</div>
+                          <div className="text-xs text-gray-500">ID: {alert.caregiverId}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <span>{alert.contact}</span>
+                          <MessageSquare className="h-4 w-4 text-blue-500 cursor-pointer" />
+                          <Phone className="h-4 w-4 text-green-500 cursor-pointer" />
+                        </div>
+                      </TableCell>
+                      <TableCell>{alert.patient}</TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={alert.issue === 'Clock-In' ? 'secondary' : 'outline'}
+                          className="text-xs"
+                        >
+                          {alert.issue}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{alert.scheduled}</TableCell>
+                      <TableCell>
+                        <Button variant="outline" size="sm" className="text-green-600 border-green-600">
+                          ✓ Mark Resolved
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </TabsContent>
 
             <TabsContent value="flagged" className="space-y-4">
-              {alertsData.flagged.map((alert) => (
-                <div key={alert.id} className="border rounded-md p-3 bg-gray-50">
-                  <div className="flex items-center text-sm">
-                    {getAlertIcon(alert.type)}
-                    <span className="font-medium">{alert.type}:</span> {alert.description}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Caregiver: {alert.caregiver}
-                  </div>
-                </div>
-              ))}
-              {alertsData.flagged.length === 0 && (
-                <div className="text-sm text-gray-500">No flagged items for today.</div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="reminders" className="space-y-4">
-              {alertsData.reminders.map((alert) => (
-                <div key={alert.id} className="border rounded-md p-3 bg-gray-50">
-                  <div className="flex items-center text-sm">
-                    {getAlertIcon(alert.type)}
-                    <span className="font-medium">{alert.type}:</span> {alert.description}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Caregiver: {alert.caregiver}
-                  </div>
-                </div>
-              ))}
-              {alertsData.reminders.length === 0 && (
-                <div className="text-sm text-gray-500">No reminders sent today.</div>
-              )}
+              <div className="flex items-center space-x-2 mb-4">
+                <span className="text-base font-semibold">Caregivers Flagged Today - Daily Intervention Log</span>
+              </div>
+              
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Caregiver</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Patient</TableHead>
+                    <TableHead>Issue Type</TableHead>
+                    <TableHead>Resolved At</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {flaggedCaregiversData.map((caregiver) => (
+                    <TableRow key={caregiver.id}>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{caregiver.caregiver}</div>
+                          <div className="text-xs text-gray-500">ID: {caregiver.caregiverId}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>{caregiver.contact}</TableCell>
+                      <TableCell>{caregiver.patient}</TableCell>
+                      <TableCell>
+                        <Badge 
+                          variant={caregiver.issueType === 'Both' ? 'destructive' : 'secondary'}
+                          className="text-xs"
+                        >
+                          {caregiver.issueType}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>{caregiver.resolvedAt}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </TabsContent>
           </div>
         </Tabs>
