@@ -13,7 +13,7 @@ export const DashboardHeader = () => {
           />
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Premier Care Dashboard
+              Dashboard
             </h1>
             <p className="text-gray-600">
               Real-time EVV Compliance Tracking
