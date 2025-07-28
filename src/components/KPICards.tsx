@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, CheckCircle, MessageSquare, Phone } from 'lucide-react';
+import { Calendar, Clock, MessageSquare } from 'lucide-react';
 
 interface KPICardsProps {
   selectedDate: Date;
@@ -81,8 +81,9 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
         </CardContent>
       </Card>
 
-      {/* Metric Cards - 70% width on desktop, split into 4 cards */}
-      <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Metric Cards - 70% width on desktop, split into 3 cards */}
+      <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Visit Overview Card */}
         <Card className="shadow-sm border">
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
@@ -90,29 +91,31 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
                 <Calendar className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-xs text-gray-600 uppercase tracking-wide">Scheduled</p>
-                <p className="text-2xl font-bold text-gray-900">{data.scheduledVisits}</p>
-                <p className="text-xs text-gray-500">visits today</p>
+                <p className="text-xs text-gray-600 uppercase tracking-wide">Visits</p>
+                <p className="text-sm font-medium text-gray-900">Scheduled: {data.scheduledVisits}</p>
+                <p className="text-sm text-gray-600">Completed: {data.completedVisits}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Clock-In/Out Compliance Card */}
         <Card className="shadow-sm border">
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+                <Clock className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="text-xs text-gray-600 uppercase tracking-wide">Completed</p>
-                <p className="text-2xl font-bold text-gray-900">{data.completedVisits}</p>
-                <p className="text-xs text-gray-500">visits done</p>
+                <p className="text-xs text-gray-600 uppercase tracking-wide">Clock Success</p>
+                <p className="text-sm font-medium text-gray-900">Clock-Ins: {data.clockInsSuccess}%</p>
+                <p className="text-sm text-gray-600">Clock-Outs: {data.clockOutsSuccess}%</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Outreach Activity Card */}
         <Card className="shadow-sm border">
           <CardContent className="p-4">
             <div className="flex items-center space-x-3">
@@ -120,24 +123,9 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
                 <MessageSquare className="h-5 w-5 text-purple-600" />
               </div>
               <div>
-                <p className="text-xs text-gray-600 uppercase tracking-wide">SMS</p>
-                <p className="text-2xl font-bold text-gray-900">{data.smsReminders}</p>
-                <p className="text-xs text-gray-500">reminders sent</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-sm border">
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <Phone className="h-5 w-5 text-orange-600" />
-              </div>
-              <div>
-                <p className="text-xs text-gray-600 uppercase tracking-wide">Voice</p>
-                <p className="text-2xl font-bold text-gray-900">{data.voiceCalls}</p>
-                <p className="text-xs text-gray-500">calls made</p>
+                <p className="text-xs text-gray-600 uppercase tracking-wide">Outreach</p>
+                <p className="text-sm font-medium text-gray-900">SMS Sent: {data.smsReminders}</p>
+                <p className="text-sm text-gray-600">Voice Calls: {data.voiceCalls}</p>
               </div>
             </div>
           </CardContent>
