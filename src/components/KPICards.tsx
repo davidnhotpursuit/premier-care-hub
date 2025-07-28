@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Calendar, CheckCircle, MessageSquare, Phone } from 'lucide-react';
+import { Calendar, CheckCircle, MessageSquare, Phone, Clock } from 'lucide-react';
 
 interface KPICardsProps {
   selectedDate: Date;
@@ -81,10 +81,12 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
         </CardContent>
       </Card>
 
-      {/* Metric Cards - 70% width on desktop, split into 4 cards */}
-      <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Metric Cards - 70% width on desktop, split into 3 merged cards */}
+      <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Merged Card: Scheduled + Completed */}
         <Card className="shadow-sm border">
-          <CardContent className="p-4">
+          <CardContent className="p-4 space-y-4">
+            {/* Scheduled Section */}
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-blue-100 rounded-lg">
                 <Calendar className="h-5 w-5 text-blue-600" />
@@ -95,11 +97,11 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
                 <p className="text-xs text-gray-500">visits today</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-sm border">
-          <CardContent className="p-4">
+            
+            {/* Separator */}
+            <div className="border-t border-gray-100"></div>
+            
+            {/* Completed Section */}
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-green-100 rounded-lg">
                 <CheckCircle className="h-5 w-5 text-green-600" />
@@ -113,8 +115,42 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
           </CardContent>
         </Card>
 
+        {/* New Card: Clock Success */}
         <Card className="shadow-sm border">
-          <CardContent className="p-4">
+          <CardContent className="p-4 space-y-4">
+            {/* Clock-Ins Section */}
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Clock className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 uppercase tracking-wide">Clock-Ins</p>
+                <p className="text-2xl font-bold text-gray-900">{data.clockInsSuccess}%</p>
+                <p className="text-xs text-gray-500">successful</p>
+              </div>
+            </div>
+            
+            {/* Separator */}
+            <div className="border-t border-gray-100"></div>
+            
+            {/* Clock-Outs Section */}
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 uppercase tracking-wide">Clock-Outs</p>
+                <p className="text-2xl font-bold text-gray-900">{data.clockOutsSuccess}%</p>
+                <p className="text-xs text-gray-500">successful</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Merged Card: SMS + Voice */}
+        <Card className="shadow-sm border">
+          <CardContent className="p-4 space-y-4">
+            {/* SMS Section */}
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-purple-100 rounded-lg">
                 <MessageSquare className="h-5 w-5 text-purple-600" />
@@ -125,11 +161,11 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
                 <p className="text-xs text-gray-500">reminders sent</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-sm border">
-          <CardContent className="p-4">
+            
+            {/* Separator */}
+            <div className="border-t border-gray-100"></div>
+            
+            {/* Voice Section */}
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-orange-100 rounded-lg">
                 <Phone className="h-5 w-5 text-orange-600" />
