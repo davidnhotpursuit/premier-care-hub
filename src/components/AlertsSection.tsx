@@ -5,8 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { AlertTriangle, Phone, MessageSquare, X } from 'lucide-react';
+import { AlertTriangle, Phone, MessageSquare } from 'lucide-react';
 
 interface AlertsSectionProps {
   selectedDate: Date;
@@ -14,8 +13,6 @@ interface AlertsSectionProps {
 
 export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
   const [activeTab, setActiveTab] = useState('active');
-  const [selectedAlert, setSelectedAlert] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Sample data - in real app would come from API
   const activeAlertsData = [
@@ -27,14 +24,7 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
       contact: '(555) 123-4567',
       patient: 'Mary Smith', 
       issue: 'Clock-In',
-      scheduled: '09:00 AM',
-      outreachAttempts: [
-        { type: 'Caregiver - Voice Call 1', result: 'No Answer' },
-        { type: 'Caregiver - Voice Call 2', result: 'Unreachable' },
-        { type: 'Patient - Voice Call', result: 'Answered' }
-      ],
-      caregiverReachStatus: 'Unreachable',
-      patientReachStatus: 'Answered'
+      scheduled: '09:00 AM'
     },
     { 
       id: 2, 
@@ -44,13 +34,7 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
       contact: '(555) 987-6543',
       patient: 'John Brown', 
       issue: 'Clock-Out',
-      scheduled: '02:30 PM',
-      outreachAttempts: [
-        { type: 'Caregiver - SMS', result: 'Delivered' },
-        { type: 'Caregiver - Voice Call', result: 'Answered' }
-      ],
-      caregiverReachStatus: 'Answered',
-      patientReachStatus: 'No Answer'
+      scheduled: '02:30 PM'
     },
   ];
 
@@ -113,14 +97,7 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
                 </TableHeader>
                 <TableBody>
                   {activeAlertsData.map((alert) => (
-                    <TableRow 
-                      key={alert.id} 
-                      className="cursor-pointer hover:bg-gray-50"
-                      onClick={() => {
-                        setSelectedAlert(alert);
-                        setIsModalOpen(true);
-                      }}
-                    >
+                    <TableRow key={alert.id}>
                       <TableCell>
                         <Badge variant="destructive" className="text-xs">
                           {alert.status}
@@ -149,7 +126,7 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
                         </Badge>
                       </TableCell>
                       <TableCell>{alert.scheduled}</TableCell>
-                      <TableCell onClick={(e) => e.stopPropagation()}>
+                      <TableCell>
                         <Button variant="outline" size="sm" className="text-green-600 border-green-600">
                           ✓ Mark Resolved
                         </Button>
@@ -203,64 +180,6 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
           </div>
         </Tabs>
       </CardContent>
-      
-      {/* Alert Details Modal */}
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center justify-between">
-              Alert Details
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsModalOpen(false)}
-                className="h-6 w-6 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </DialogTitle>
-          </DialogHeader>
-          
-          {selectedAlert && (
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium">Caregiver: {selectedAlert.caregiver} ({selectedAlert.caregiverId})</h4>
-                <p className="text-sm text-gray-600">Phone: {selectedAlert.contact}</p>
-              </div>
-              
-              <div>
-                <p className="font-medium">Patient: {selectedAlert.patient}</p>
-              </div>
-              
-              <div className="space-y-1">
-                <p className="text-sm">Issue: Missed {selectedAlert.issue}</p>
-                <p className="text-sm">Scheduled Time: {selectedAlert.scheduled}</p>
-                <p className="text-sm">Status: Unresolved</p>
-              </div>
-              
-              <div>
-                <h5 className="font-medium mb-2">Outreach Attempts:</h5>
-                <ul className="space-y-1">
-                  {selectedAlert.outreachAttempts?.map((attempt: any, index: number) => (
-                    <li key={index} className="text-sm">
-                      • {attempt.type}: {attempt.result}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              <div className="pt-4 border-t">
-                <Button 
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  Mark as Resolved
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </Card>
   );
 };
