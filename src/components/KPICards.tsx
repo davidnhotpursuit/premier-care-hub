@@ -15,8 +15,8 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
     evvCompliance: 83.7,
     smsReminders: 45,
     voiceCalls: 18,
-    clockInsSuccess: 89,
-    clockOutsSuccess: 86
+    clockInsSuccess: 165,
+    clockOutsSuccess: 152
   };
 
   const getComplianceColor = (percentage: number) => {
@@ -125,8 +125,8 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
               </div>
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-wide">Clock-Ins</p>
-                <p className="text-2xl font-bold text-gray-900">{data.clockInsSuccess}%</p>
-                <p className="text-xs text-gray-500">successful</p>
+                <p className="text-2xl font-bold text-gray-900">{data.clockInsSuccess}</p>
+                <p className="text-xs text-gray-500">completed</p>
               </div>
             </div>
             
@@ -136,12 +136,12 @@ export const KPICards = ({ selectedDate }: KPICardsProps) => {
             {/* Clock-Outs Section */}
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-green-100 rounded-lg">
-                <CheckCircle className="h-5 w-5 text-green-600" />
+                <Clock className="h-5 w-5 text-green-600" />
               </div>
               <div>
                 <p className="text-xs text-gray-600 uppercase tracking-wide">Clock-Outs</p>
-                <p className="text-2xl font-bold text-gray-900">{data.clockOutsSuccess}%</p>
-                <p className="text-xs text-gray-500">successful</p>
+                <p className="text-2xl font-bold text-gray-900">{data.clockOutsSuccess}</p>
+                <p className="text-xs text-gray-500">completed</p>
               </div>
             </div>
           </CardContent>
