@@ -71,6 +71,12 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
     setExpandedAlerts(newExpanded);
   };
 
+  const revertToUnresolved = (alertId: number) => {
+    const newResolved = new Set(resolvedAlerts);
+    newResolved.delete(alertId);
+    setResolvedAlerts(newResolved);
+  };
+
   return (
     <Card className="shadow-sm border">
       <CardHeader className="pb-2 pt-4 px-4">
@@ -86,6 +92,16 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
             <p className="text-sm text-gray-600 ml-7">Click each alert to view more details.</p>
           </div>
           
+          {/* Column Headers */}
+          <div className="grid grid-cols-6 gap-4 items-center px-4 py-2 bg-gray-50 border rounded-lg text-sm font-medium text-gray-700">
+            <div>Status</div>
+            <div>Caregiver</div>
+            <div>Contact</div>
+            <div>Patient</div>
+            <div>Issue</div>
+            <div>Actions</div>
+          </div>
+          
           <div className="space-y-2">
             {activeAlertsData.map((alert) => {
               const isExpanded = expandedAlerts.has(alert.id);
@@ -96,9 +112,9 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
                   {/* Alert Header - Clickable */}
                   <div 
                     className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${isResolved ? 'opacity-75' : ''}`}
-                    onClick={() => !isResolved && toggleAlert(alert.id)}
+                    onClick={() => toggleAlert(alert.id)}
                   >
-                    <div className="grid grid-cols-7 gap-4 items-center">
+                    <div className="grid grid-cols-6 gap-4 items-center">
                       <div>
                         <Badge 
                           variant={isResolved ? "secondary" : "destructive"} 
@@ -125,9 +141,20 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
                           {alert.issue}
                         </Badge>
                       </div>
-                      <div>{alert.scheduled}</div>
                       <div>
-                        {!isResolved && (
+                        {isResolved ? (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              revertToUnresolved(alert.id);
+                            }}
+                          >
+                            ↺ Revert to Unresolved
+                          </Button>
+                        ) : (
                           <Button 
                             variant="outline" 
                             size="sm" 
