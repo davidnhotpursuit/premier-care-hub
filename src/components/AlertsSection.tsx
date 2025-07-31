@@ -80,14 +80,17 @@ export const AlertsSection = ({ selectedDate }: AlertsSectionProps) => {
   return (
     <Card className="shadow-sm border">
       <CardHeader className="pb-2 pt-4 px-4">
-        <div className="flex items-center space-x-2">
-          <AlertTriangle className="h-5 w-5 text-red-500" />
-          <CardTitle className="text-lg font-semibold">Real-Time Alerts - Manual Review Required</CardTitle>
-        </div>
-        <p className="text-sm text-gray-600 mt-1">Click each alert to view more details.</p>
+        <CardTitle className="text-lg font-semibold">Alerts & Reminders</CardTitle>
       </CardHeader>
       <CardContent className="p-4">
         <div className="space-y-4">
+          <div className="flex flex-col space-y-1 mb-4">
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              <h3 className="text-base font-semibold">Real-Time Alerts - Manual Review Required</h3>
+            </div>
+            <p className="text-sm text-gray-600 ml-7">Click each alert to view more details.</p>
+          </div>
           
           {/* Column Headers */}
           <div className="grid grid-cols-6 gap-4 items-center px-4 py-2 bg-gray-50 border rounded-lg text-sm font-medium text-gray-700">
